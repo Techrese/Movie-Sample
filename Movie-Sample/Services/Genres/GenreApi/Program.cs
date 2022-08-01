@@ -1,4 +1,7 @@
+using GenreApi.Models;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +11,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
-
-
-
 
 builder.Services.AddApiVersioning(config => 
 {
@@ -31,6 +29,19 @@ builder.Services.AddVersionedApiExplorer(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
+
+builder.Services.AddDbContext<GenreDbContext>(options => 
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GenreDbContext"));
+});
+
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("Serilog.json")
+    .Build();
+
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,4 +57,18 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    Log.Information("Application starting...");
+    app.Run();
+}
+catch (Exception)
+{
+    Log.Error("Error running application");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+
+

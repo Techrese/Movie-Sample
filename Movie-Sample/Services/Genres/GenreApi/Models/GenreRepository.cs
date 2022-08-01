@@ -1,32 +1,54 @@
 ﻿using GenreApi.Models.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace GenreApi.Models
 {
+
     public class GenreRepository : IGenreRepository
     {
-        public Task<bool> AddGenreAsync(Genre genre)
+        private readonly GenreDbContext _context;
+        private readonly ILogger<GenreRepository> _logger;
+
+        public GenreRepository(GenreDbContext context, ILogger<GenreRepository> logger)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _logger = logger;   
+        }
+
+        public async ValueTask<bool> AddGenreAsync(Genre genre)
+        {
+            await _context.Genres.AddAsync(genre);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void DeleteGenre(Genre genre)
         {
-            throw new NotImplementedException();
+            _context.Genres.Remove(genre);
         }
 
-        public Task<IEnumerable<Genre>> GetAllGenreAsync()
+        public async ValueTask<IEnumerable<Genre>> GetAllGenreAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Genres.ToListAsync();
         }
 
-        public Task<Genre> GetGenreAsync(Guid id)
+        public async ValueTask<Genre> GetGenreAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Genres.FindAsync(id);
         }
 
-        public bool UpdateGenre(Genre genre)
+        public async ValueTask<Genre> SearchGenre(Expression<Func<Genre, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _context.Genres.Where(predicate).FirstOrDefaultAsync();
+        }
+
+        public void UpdateGenre(Genre genre)
+        {
+            _context.Genres.Update(genre);
         }
     }
 }

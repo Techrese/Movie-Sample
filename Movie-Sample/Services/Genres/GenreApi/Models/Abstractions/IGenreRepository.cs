@@ -1,11 +1,14 @@
-﻿namespace GenreApi.Models.Abstractions
+﻿using System.Linq.Expressions;
+
+namespace GenreApi.Models.Abstractions
 {
     public interface IGenreRepository
     {
-        Task<IEnumerable<Genre>> GetAllGenreAsync();
-        Task<Genre> GetGenreAsync(Guid id);
+        ValueTask<IEnumerable<Genre>> GetAllGenreAsync();
+        ValueTask<Genre> GetGenreAsync(Guid id);
         void DeleteGenre(Genre genre);
-        Task<bool> AddGenreAsync(Genre genre);
-        bool UpdateGenre(Genre genre);
+        ValueTask<bool> AddGenreAsync(Genre genre);
+        void UpdateGenre(Genre genre);
+        ValueTask<Genre> SearchGenre(Expression<Func<Genre, bool>> predicate);
     }
 }
