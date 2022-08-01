@@ -1,6 +1,4 @@
-﻿using Domain.Models;
-
-namespace GenreApi.Models.Abstractions
+﻿namespace GenreApi.Models.Abstractions
 {
     public interface IGenreRepository
     {

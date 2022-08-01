@@ -1,4 +1,4 @@
-﻿using Domain.Dto;
+﻿using GenreApi.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

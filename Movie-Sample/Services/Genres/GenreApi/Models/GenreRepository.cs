@@ -1,5 +1,4 @@
-﻿using Domain.Models;
-using GenreApi.Models.Abstractions;
+﻿using GenreApi.Models.Abstractions;
 
 namespace GenreApi.Models
 {
