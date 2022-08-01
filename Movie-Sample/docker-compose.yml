@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  genreapi:
+    image: ${DOCKER_REGISTRY-}genreapi
+    build:
+      context: .
+      dockerfile: Services/Genres/GenreApi/Dockerfile

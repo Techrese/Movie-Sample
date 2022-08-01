@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "BuildingBlocks\Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenreApi", "Services\Genres\GenreApi\GenreApi.csproj", "{61B0E3B6-4E91-45EA-808B-D4B27E7AFCF0}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2A86FC08-0DAA-4D99-B7CB-26EE9D826858}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{61B0E3B6-4E91-45EA-808B-D4B27E7AFCF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61B0E3B6-4E91-45EA-808B-D4B27E7AFCF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61B0E3B6-4E91-45EA-808B-D4B27E7AFCF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A86FC08-0DAA-4D99-B7CB-26EE9D826858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A86FC08-0DAA-4D99-B7CB-26EE9D826858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A86FC08-0DAA-4D99-B7CB-26EE9D826858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A86FC08-0DAA-4D99-B7CB-26EE9D826858}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
