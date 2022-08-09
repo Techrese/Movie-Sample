@@ -7,7 +7,7 @@ namespace GenreApi.Models.Abstractions
         ValueTask<IEnumerable<Genre>> GetAllGenreAsync();
         ValueTask<Genre> GetGenreAsync(Guid id);
         void DeleteGenre(Genre genre);
-        ValueTask<bool> AddGenreAsync(Genre genre);
+        ValueTask<Guid> AddGenreAsync(Genre genre);
         void UpdateGenre(Genre genre);
         ValueTask<Genre> SearchGenre(Expression<Func<Genre, bool>> predicate);
     }

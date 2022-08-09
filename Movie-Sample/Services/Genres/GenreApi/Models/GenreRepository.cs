@@ -16,14 +16,11 @@ namespace GenreApi.Models
             _logger = logger;   
         }
 
-        public async ValueTask<bool> AddGenreAsync(Genre genre)
+        public async ValueTask<Guid> AddGenreAsync(Genre genre)
         {
             await _context.Genres.AddAsync(genre);
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                return true;
-            }
-            return false;
+            await _context.SaveChangesAsync();
+            return genre.Id;
         }
 
         public void DeleteGenre(Genre genre)
