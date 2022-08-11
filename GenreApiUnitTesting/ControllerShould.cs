@@ -57,7 +57,7 @@ namespace GenreApiUnitTesting
         [Test]
         public void ReturnNotFoundWhenNotFoundInRepository()
         {
-            _repository.Setup(x => x.SearchGenre(It.Is<Expression<Func<Genre, bool>>>(x => x.Name == "Fantasy"))).ReturnsAsync(new Genre { Id = Guid.NewGuid(), Name = "Fantasy" });
+            _repository.Setup(x => x.SearchGenre(It.IsAny<Expression<Func<Genre, bool>>>())).ReturnsAsync((Genre)null);
 
             var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
 
@@ -71,7 +71,7 @@ namespace GenreApiUnitTesting
         [Test]
         public void ReturnOKWhenDataFoundInRepository()
         {
-            _repository.Setup(x => x.SearchGenre(It.Is<Expression<Func<Genre, bool>>>(x => x.Name == "Fantasy"))).ReturnsAsync(new Genre { Id = Guid.NewGuid(), Name = "Fantasy" });
+            _repository.Setup(x => x.SearchGenre(It.IsAny<Expression<Func<Genre, bool>>>())).ReturnsAsync(new Genre { Id = Guid.NewGuid(), Name = "Fantasy" });
 
             var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
 
@@ -80,6 +80,21 @@ namespace GenreApiUnitTesting
             int code = ((OkObjectResult)result.Result).StatusCode.Value;
 
             Assert.That(code, Is.EqualTo(StatusCodes.Status200OK));
+        }
+
+        [Test]
+        public void ReturnBadRequestWhenExceptionThrownInsearch()
+        {
+            _repository.Setup(x => x.SearchGenre(It.IsAny<Expression<Func<Genre, bool>>>())).ThrowsAsync(new Exception());
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.GetGenreByNameAsync("Fantasy");
+
+
+            int code = ((BadRequestResult)result.Result).StatusCode;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status400BadRequest));
         }
 
         [Test]
@@ -105,6 +120,81 @@ namespace GenreApiUnitTesting
 
             Assert.That((int)StatusCodes.Status201Created, Is.EqualTo(code));                     
 
-        }             
+        }
+
+        [Test]
+        public void ReturnBadRequestWhenGivenInvalidDataToAdd()
+        {
+            GenreDto genre = new()
+            {
+                Name = null
+            };
+
+            _repository.Setup(x => x.AddGenreAsync(It.IsAny<Genre>()));
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.AddGenreAsync(genre);
+
+            int code = ((BadRequestResult)result.Result).StatusCode;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status400BadRequest));            
+        }
+
+        [Test]
+        public void ReturnBadRequestWhenExceptionThrownInAdd()
+        {
+            _repository.Setup(x => x.AddGenreAsync(It.IsAny<Genre>())).Throws(new Exception());
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.AddGenreAsync(null);
+
+            int code = ((BadRequestResult)result.Result).StatusCode;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status400BadRequest));
+        }
+
+        [Test]
+        public void ReturnNotFoundWhenIdNotFound()
+        {
+            _repository.Setup(x => x.GetGenreAsync(It.IsAny<Guid>()));
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.DeleteGenreAsync(Guid.NewGuid());
+
+            int code = ((NotFoundResult)result.Result).StatusCode;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status404NotFound));
+        }
+
+        [Test]
+        public void ReturnOkWhenGenreCanDelete()
+        {
+            _repository.Setup(x => x.GetGenreAsync(It.IsAny<Guid>())).ReturnsAsync(new Genre { Id = Guid.NewGuid(), Name = "Fantasy" });
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.DeleteGenreAsync(Guid.NewGuid());
+
+            int code = ((OkObjectResult)result.Result).StatusCode.Value;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status200OK));
+        }
+
+        [Test]
+        public void ReturnBadRequestWhenGenreDeleteThrows()
+        {
+            _repository.Setup(x => x.GetGenreAsync(It.IsAny<Guid>())).ThrowsAsync(new Exception());
+
+            var controller = new GenreController(_repository.Object, _mapper.Object, _logger.Object);
+
+            var result = controller.DeleteGenreAsync(Guid.NewGuid());
+
+            int code = ((BadRequestResult)result.Result).StatusCode;
+
+            Assert.That(code, Is.EqualTo(StatusCodes.Status400BadRequest));
+        }
     }
 }

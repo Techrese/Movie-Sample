@@ -20,6 +20,7 @@ builder.Services.AddTransient<IGenreRepository, GenreRepository>();
 
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+//builder.Services.Configure<ConfigureSwaggerOptions>();
 
 builder.Services.AddApiVersioning(config => 
 {
@@ -57,7 +58,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI();    
 }
 
 app.UseHttpsRedirection();

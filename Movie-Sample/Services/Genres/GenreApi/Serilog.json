@@ -4,7 +4,7 @@
       {
         "Name": "File",
         "Args": {
-          "path": "log.txt",
+          "path": "log.log",
           "rollingInterval": "Day"
         }
       }
